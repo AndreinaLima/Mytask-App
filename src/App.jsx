@@ -4,6 +4,7 @@ import Cadastro from "./pages/Cadastro";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import EditarTarefa from "./pages/EditarTarefa"
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast"
@@ -26,6 +27,7 @@ function App() {
           <Route path="/ajuda" element={<Ajuda />} />
           <Route path="/tarefas" element={<Tarefas />} />
           <Route path="/tarefas/adicionar" element={<NovaTarefa />} />
+          <Route path="/tarefas/editar/:id" element={<EditarTarefa />} />
           <Route path="/politicas" element={<Politicas />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

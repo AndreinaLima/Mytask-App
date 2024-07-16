@@ -1,17 +1,31 @@
 import { Badge, Button, Card, Container } from "react-bootstrap"
-import { Link } from "react-router-dom"
-import { getTarefas } from "../firebase/tarefas"
+import { Link, useNavigate } from "react-router-dom"
+import { deleteTarefa, getTarefas } from "../firebase/tarefas"
 import { useEffect, useState } from "react"
 import Loader from "../components/Loader"
+import toast from "react-hot-toast"
 
 function Tarefas() {
   const [tarefas, setTarefas] = useState(null)
+  const navigate = useNavigate();
 
   function carregarDados() {
     // O then devolve a lista de tarefas da coleção
     getTarefas().then((resultados) => {
       setTarefas(resultados)
     })
+  }
+
+  function deletarTarefa(id) {
+    // true -> apagar a tarefa, false -> não fazer nada
+    const deletar = confirm("Tem certeza?")
+    if (deletar) {
+      deleteTarefa(id).then(() => {
+        toast.success("Tarefa removida com sucesso")
+        // Trazer a lista de tarefas atualizada
+        carregarDados()
+      })
+    }
   }
 
   // Executar uma função quando o componente
@@ -25,7 +39,7 @@ function Tarefas() {
       <Container className="mt-5">
         <h1>Suas tarefas</h1>
         <hr />
-        <Link className="btn btn-dark" to="/tarefas/adicionar">
+        <Link className="btn btn-primary" to="/tarefas/adicionar">
           Adicionar tarefa
         </Link>
         {tarefas ? (
@@ -37,6 +51,9 @@ function Tarefas() {
                     <Card.Title>{tarefa.titulo}</Card.Title>
                     <Card.Text>{tarefa.descricao}</Card.Text>
                     <div className="mb-2">
+                      <Badge bg="dark" className="me-2">
+                        {tarefa.categoria}
+                      </Badge>
                       {tarefa.concluido ? (
                         <Badge bg="success" className="me-2">
                           Concluído
@@ -46,14 +63,32 @@ function Tarefas() {
                           Pendente
                         </Badge>
                       )}
-                      <Badge bg="dark">
-                        {tarefa.categoria}
+                      <Badge bg="primary">
+                        {new Date(tarefa.dataConclusao).toLocaleDateString()}
                       </Badge>
                     </div>
-                    <Button variant="dark" className="me-2">
-                      Editar
-                    </Button>
-                    <Button variant="danger">Excluir</Button>
+                    <div className="d-flex gap-2">
+                      <Button
+                        variant="primary"
+                        className="p-1 d-flex align-items-center gap-1"
+                        onClick={() => {
+                          navigate(`/tarefas/editar/${tarefa.id}`)
+                        }}
+                      >
+                        <span className="material-symbols-outlined">edit</span>
+                        Editar
+                      </Button>
+                      <Button
+                        variant="danger"
+                        className="p-1 d-flex align-items-center gap-1"
+                        onClick={() => deletarTarefa(tarefa.id)}
+                      >
+                        Excluir
+                        <span className="material-symbols-outlined">
+                          delete
+                        </span>
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               )
