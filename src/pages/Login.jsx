@@ -11,7 +11,7 @@ function Login() {
   return (
     <main>
       <form className="form-section mt-5" onSubmit={handleSubmit(entrar)}>
-        <h1>Faça o seu Login</h1>
+        <h1>Login</h1>
         <hr />
         <div>
           <label htmlFor="email">Email</label>

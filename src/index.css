@@ -8,3 +8,7 @@
 .invalid {
   color: red;
 }
+
+main {
+  min-height: 60vh;
+}
