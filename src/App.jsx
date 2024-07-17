@@ -22,14 +22,20 @@ import { UsuarioContext } from "./contexts/UsuarioContext";
 function App() {
   // O estado de usuario indica se ele está logado ou não na aplicação
   // null = deslogado
-  const [usuarioLogado, setUsuarioLogado] = useState(null)
+  const [usuarioLogado, setUsuarioLogado] = useState(null);
+  const [loading, setloading] = useState(true);
 
   useEffect(() => {
     // Monitora/detecta o usuario conectado/desconcetado
     onAuthStateChanged(auth, (user) => {
-      setUsuarioLogado(user)
+      setUsuarioLogado(user);
+      setloading(false)
     })
   }, [])
+
+  if(loading) {
+    return null;
+  }
 
   return (
     <>
