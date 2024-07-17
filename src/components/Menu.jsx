@@ -1,10 +1,18 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { logout } from "../firebase/auth";
 
-// Link: este componente habilita o SPA (Single-Page Application)
-// Obs: Se houver links externos utilize a tag <a />
+// eslint-disable-next-line react/prop-types
+function Menu({ usuario }) {
+  const navigate = useNavigate();
 
-function Menu() {
+  function handleLogout() {
+    logout().then(() => {
+      navigate("/login");
+    })
+  }
+
   return (
     <header>
       <Navbar bg="warning" variant="light" expand="md">
@@ -18,16 +26,28 @@ function Menu() {
           <Navbar.Toggle />
           <Navbar.Collapse>
             <Nav className="ms-auto">
-              <Link className="nav-link" to="/tarefas">Tarefas</Link>
-              <Link className="nav-link" to="/login">
-                Login
-              </Link>
-              <Link className="nav-link" to="/cadastro">
-                Cadastro
-              </Link>
+              {usuario && (
+                <Link className="nav-link" to="/tarefas">
+                  Tarefas
+                </Link>
+              )}
+              {!usuario && (
+                <Link className="nav-link" to="/login">
+                  Login
+                </Link>
+              )}
+              {!usuario && (
+                <Link className="nav-link" to="/cadastro">
+                  Cadastro
+                </Link>
+              )}             
               <Link className="nav-link" to="/ajuda">
                 Ajuda
               </Link>
+              {usuario && <span className="text-dark nav-link">{usuario.displayName}</span>}
+              {usuario && <Button variant="outline-dark" onClick={handleLogout}>
+                Sair
+              </Button>}
             </Nav>
           </Navbar.Collapse>
         </Container>

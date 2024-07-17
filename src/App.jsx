@@ -12,14 +12,27 @@ import Politicas from "./pages/Politicas";
 import Rodape from "./components/Rodape";
 import NovaTarefa from "./pages/NovaTarefa";
 import Tarefas from "./pages/Tarefas";
+import { useEffect, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "./firebase/config";
 
-// BrowserRouter: componente essencial para conduzir o roteamento no navegador.
 
 function App() {
+  // O estado de usuario indica se ele está logado ou não na aplicação
+  // null = deslogado
+  const [usuarioLogado, setUsuarioLogado] = useState(null)
+
+  useEffect(() => {
+    // Monitora/detecta o usuario conectado/desconcetado
+    onAuthStateChanged(auth, (user) => {
+      setUsuarioLogado(user)
+    })
+  }, [])
+
   return (
     <>
       <BrowserRouter>
-        <Menu />
+        <Menu usuario={usuarioLogado} />
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
@@ -33,7 +46,7 @@ function App() {
         </Routes>
         <Rodape />
       </BrowserRouter>
-      <Toaster position="bottom-right"/>
+      <Toaster position="bottom-right" />
     </>
   )
 }
