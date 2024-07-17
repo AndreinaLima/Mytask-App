@@ -5,16 +5,18 @@ import Home from "./pages/Home";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import EditarTarefa from "./pages/EditarTarefa"
+import NovaTarefa from "./pages/NovaTarefa"
+import Tarefas from "./pages/Tarefas"
+import Politicas from "./pages/Politicas"
+import Rodape from "./components/Rodape"
 
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast"
-import Politicas from "./pages/Politicas";
-import Rodape from "./components/Rodape";
-import NovaTarefa from "./pages/NovaTarefa";
-import Tarefas from "./pages/Tarefas";
+
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
+import { UsuarioContext } from "./contexts/UsuarioContext";
 
 
 function App() {
@@ -31,22 +33,24 @@ function App() {
 
   return (
     <>
-      <BrowserRouter>
-        <Menu usuario={usuarioLogado} />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/ajuda" element={<Ajuda />} />
-          <Route path="/tarefas" element={<Tarefas />} />
-          <Route path="/tarefas/adicionar" element={<NovaTarefa />} />
-          <Route path="/tarefas/editar/:id" element={<EditarTarefa />} />
-          <Route path="/politicas" element={<Politicas />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-        <Rodape />
-      </BrowserRouter>
-      <Toaster position="bottom-right" />
+      <UsuarioContext.Provider value={usuarioLogado}>
+        <BrowserRouter>
+          <Menu />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/cadastro" element={<Cadastro />} />
+            <Route path="/ajuda" element={<Ajuda />} />
+            <Route path="/tarefas" element={<Tarefas />} />
+            <Route path="/tarefas/adicionar" element={<NovaTarefa />} />
+            <Route path="/tarefas/editar/:id" element={<EditarTarefa />} />
+            <Route path="/politicas" element={<Politicas />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+          <Rodape />
+        </BrowserRouter>
+        <Toaster position="bottom-right" />
+      </UsuarioContext.Provider>
     </>
   )
 }

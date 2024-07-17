@@ -1,10 +1,14 @@
+/* eslint-disable react/prop-types */
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { logout } from "../firebase/auth";
+import { useContext } from "react";
+import { UsuarioContext } from "../contexts/UsuarioContext";
 
 // eslint-disable-next-line react/prop-types
-function Menu({ usuario }) {
+function Menu() {
+  const usuario = useContext(UsuarioContext)
   const navigate = useNavigate();
 
   function handleLogout() {
