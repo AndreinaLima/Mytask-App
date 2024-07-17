@@ -1,19 +1,25 @@
-import { Badge, Button, Card, Container } from "react-bootstrap"
-import { Link, useNavigate } from "react-router-dom"
-import { deleteTarefa, getTarefas } from "../firebase/tarefas"
-import { useEffect, useState } from "react"
-import Loader from "../components/Loader"
-import toast from "react-hot-toast"
+import { Badge, Button, Card, Container } from "react-bootstrap";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { deleteTarefa, getTarefasUsuario } from "../firebase/tarefas";
+import { useContext, useEffect, useState } from "react";
+import Loader from "../components/Loader";
+import toast from "react-hot-toast";
+import { UsuarioContext } from "../contexts/UsuarioContext";
 
 function Tarefas() {
-  const [tarefas, setTarefas] = useState(null)
+  const [tarefas, setTarefas] = useState(null);
+  // Recuperamos a informação do usuário (se está logado ou não)
+  const usuario = useContext(UsuarioContext);
+
   const navigate = useNavigate();
 
   function carregarDados() {
     // O then devolve a lista de tarefas da coleção
-    getTarefas().then((resultados) => {
-      setTarefas(resultados)
-    })
+    if (usuario) {
+      getTarefasUsuario(usuario.uid).then((resultados) => {
+        setTarefas(resultados)
+      })
+    }
   }
 
   function deletarTarefa(id) {
@@ -32,7 +38,14 @@ function Tarefas() {
   // é renderizado a primeira vez
   useEffect(() => {
     carregarDados()
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  //Se o usuário não está logado
+  if(usuario === null) {
+    // Navegar para outra página
+    return <Navigate to="/login" />
+  }
 
   return (
     <main>

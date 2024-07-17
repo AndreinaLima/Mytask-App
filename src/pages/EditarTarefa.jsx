@@ -1,9 +1,10 @@
 import { Button } from "react-bootstrap"
 import { useForm } from "react-hook-form"
 import toast from "react-hot-toast"
-import { useNavigate, useParams } from "react-router-dom"
+import { Navigate, useNavigate, useParams } from "react-router-dom"
 import { getTarefa, updateTarefa } from "../firebase/tarefas"
-import { useEffect } from "react"
+import { useContext, useEffect } from "react"
+import { UsuarioContext } from "../contexts/UsuarioContext"
 
 function EditarTarefa() {
   const { id } = useParams()
@@ -15,6 +16,7 @@ function EditarTarefa() {
     reset,
   } = useForm()
 
+  const usuario = useContext(UsuarioContext)
   const navigate = useNavigate()
 
   function carregarDado() {
@@ -41,6 +43,9 @@ function EditarTarefa() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  if(usuario === null) {
+    return <Navigate to="/login"/>
+  }
   return (
     <main>
       <form className="form-section" onSubmit={handleSubmit(atualizarTarefa)}>
