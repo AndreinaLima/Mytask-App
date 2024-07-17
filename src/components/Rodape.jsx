@@ -14,7 +14,7 @@ function Rodape() {
         </Link>
         <p className="mb-0">
           Desenvolvido por{" "}
-          <a href="https://www.linkedin.com/in/andreinalima/" className="link-footer">Andreina Lima</a> com a ©SoulCode.
+          <a href="https://www.linkedin.com/in/andreinalima/" target="blank" className="link-footer">Andreina Lima</a> com a ©SoulCode.
           Todos os direitos reservados
         </p>
         <ul className="list-unstyled d-flex mt-3">
