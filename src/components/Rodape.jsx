@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 
 function Rodape() {
   return (
-    <footer className="bg-warning text-light py-4">
+    <footer className="bg-warning text-light py-2">
       <div className="container d-flex flex-column justify-content-center align-items-center">
         <Link to="/" className="mb-3">
           <img
@@ -12,7 +12,11 @@ function Rodape() {
             width="32"
           />
         </Link>
-        <p className="mb-0">© SoulCode. Todos os direitos reservados</p>
+        <p className="mb-0">
+          Desenvolvido por{" "}
+          <a href="https://www.linkedin.com/in/andreinalima/" className="link-footer">Andreina Lima</a> com a ©SoulCode.
+          Todos os direitos reservados
+        </p>
         <ul className="list-unstyled d-flex mt-3">
           <li className="me-3">
             <Link className="text-light" to="/politicas">
